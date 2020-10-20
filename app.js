@@ -1,6 +1,3 @@
-/**
- * Example store structure
- */
 const store = {
   // 5 or more questions are required
   questions: [
@@ -20,45 +17,109 @@ const store = {
   score: 0,
 }
 
-/**
- *
- * Technical requirements:
- *
- * Your app should include a render() function, that regenerates the view each time the store is updated.
- * See your course material, consult your instructor, and reference the slides for more details.
- *
- * NO additional HTML elements should be added to the index.html file.
- *
- * You may add attributes (classes, ids, etc) to the existing HTML elements, or link stylesheets or additional scripts if necessary
- *
- * SEE BELOW FOR THE CATEGORIES OF THE TYPES OF FUNCTIONS YOU WILL BE CREATING 👇
- *
- */
-
-/********** TEMPLATE GENERATION FUNCTIONS **********/
-
-// These functions return HTML templates
-
-/********** RENDER FUNCTION(S) **********/
-
-// This function conditionally replaces the contents of the <main> tag based on the state of the store
-
-/********** EVENT HANDLER FUNCTIONS **********/
-
-// These functions handle events (submit, click, etc)
-
 function startPageHTML() {
   return `<header><h1>Science Quiz<h1></header><div class="startPage">
   <p>Let us see how much you know about random science facts!</p>
   <button type="button" id = "start"> Start the Quiz!</button></div>`
 }
 
+function currentQuestionHTML(question) {
+  let answer = question.answers
+  return `<header>
+  <h1>Fun Science Quiz</h1>
+  <p>Current Question: ${store.questionNumber + 1}</p>
+  <p>Score: ${store.score}</p>
+</header>
+<form>
+  <h3 class="Question"> ${question.question} </h3>
+  <label for="answer-0">
+      <input type="radio" id="answer-0" name="answer" value="${
+        answer[0]
+      }"required>${answer[0]}
+    </label>
+  <label for="answer-1">
+      <input type="radio" id="answer-1" name="answer" value="${answer[1]}">${
+    answer[1]
+  }
+    </label>
+  <label for="answer-2">
+      <input type="radio" id="answer-2" name="answer" value="${answer[2]}">${
+    answer[2]
+  }
+    </label>
+  <label for="answer-3">
+      <input type="radio" id="answer-3" name="answer" value="${answer[3]}">${
+    answer[3]
+  }
+    </label>
+  <button class="submitButton" type="submit">
+      Submit Question
+    </button>
+</form>  
+`
+}
+
+function renderQuestion() {
+  let question = store.questions[store.questionNumber]
+  let questionHTML = currentQuestionHTML(question)
+  $("main").html(questionHTML)
+  $("form").submit(function (event) {
+    event.preventDefault()
+    let answer = $("input:radio[name=answer]:checked").val()
+
+    if (answer === question.correctAnswer) {
+      store.score++
+
+      $("main").html(
+        `<h1>Correct</h1><p>Correct</p><button class="next">Next</button>`
+      )
+    } else {
+      $("main").html(`
+        <h1>Wrong</h1>
+        <p>The correct answer was ${question.correctAnswer} </p>
+        <button class="next">Next</button>
+      `)
+    }
+    store.questionNumber++
+  })
+}
+
+function next() {
+  $("main").on("click", ".next", function () {
+    let totalNumberOfQuestions = store.questions.length
+    let currentQuestion = store.questionNumber
+    if (currentQuestion >= totalNumberOfQuestions) {
+      $("main").html(restartScreenHTML())
+      $("#restart").click(function (e) {
+        resetScore()
+        renderStartPage()
+      })
+    } else {
+      renderQuestion()
+    }
+  })
+}
+
 function renderStartPage() {
   $("main").html(startPageHTML())
+  $("#start").on("click", function () {
+    renderQuestion()
+    next()
+  })
 }
 
-function main() {
-  renderStartPage()
+function restartScreenHTML() {
+  return `
+    <div class='quiz-result'>
+        <p>The Quiz is over.</p>
+        <p> You scored ${store.score}/${store.questions.length}</p>
+        <button type="button" id="restart"> Restart Quiz</button>
+    </div>
+  `
+}
+function resetScore() {
+  store.score = 0
+  store.questionNumber = 0
 }
 
-$(main)
+$(renderStartPage)
