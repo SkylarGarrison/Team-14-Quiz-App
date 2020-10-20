@@ -5,25 +5,55 @@ const store = {
   // 5 or more questions are required
   questions: [
     {
-      question: 'What color is broccoli?',
+      question: 'What color is the sky?',
       answers: [
-        'red',
-        'orange',
-        'pink',
-        'green'
+        'Red',
+        'Pink',
+        'Blue',
+        'Purple'
       ],
-      correctAnswer: 'green'
+      correctAnswer: 'Blue'
     },
     {
-      question: 'What is the current year?',
+      question: 'What is the biggest planet in the solar system?',
       answers: [
-        '1970',
-        '2015',
-        '2019',
-        '2005'
+        'Mars',
+        'Pluto',
+        'Earth',
+        'Jupiter'
       ],
-      correctAnswer: '2019'
-    }
+      correctAnswer: 'Jupiter'
+    },
+    {
+      question: 'What part of the human skeleton protects the brain?',
+      answers: [
+        'The funny bone',
+        'The skull',
+        'The rib cage',
+        'The coccyx'
+      ],
+      correctAnswer: 'The Skull'
+    },
+    {
+      question: 'What color is the sky?',
+      answers: [
+        '32°F',
+        '50°F',
+        '10°C',
+        '32°C'
+      ],
+      correctAnswer: '32°F'
+    },
+    {
+      question: 'What is the scientific study of plants?',
+      answers: [
+        'Anatomy',
+        'Petrology',
+        'Botany',
+        'Ornithology'
+      ],
+      correctAnswer: 'Botany'
+    },
   ],
   quizStarted: false,
   questionNumber: 0,
