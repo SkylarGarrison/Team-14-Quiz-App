@@ -17,10 +17,40 @@ const store = {
       answers: [
         '1970',
         '2015',
-        '2019',
+        '2020',
         '2005'
       ],
-      correctAnswer: '2019'
+      correctAnswer: '2020'
+    },
+    {
+      question: 'What color is the sky?',
+      answers: [
+        'blue',
+        'red',
+        'green',
+        'Yellow'
+      ],
+      correctAnswer: 'blue'
+    },
+    {
+      question: 'What color are stop signs?',
+      answers: [
+        'red',
+        'blue',
+        'white',
+        'yellow'
+      ],
+      correctAnswer: 'red'
+    },
+    {
+      question: 'how many days are there in a month',
+      answers: [
+        '7',
+        '20',
+        '1',
+        '5'
+      ],
+      correctAnswer: '7'
     }
   ],
   quizStarted: false,
@@ -34,7 +64,7 @@ function render(){
     $("main").html(startPage());
   } else if(store.quizStarted === true){
     $("main").html(questionPage());
-    store.questionNumber++;
+    
   }
 }
 //this function is going to have a div template to start out the app and a button with id="start" the button will begin the app 
@@ -86,13 +116,21 @@ function questionPage(){
     return questionPage;
 }
 
+// this function goes in the question page
+function handleAnswerSubmit(){
+  $("main").on("submit", "form", function(evt){
+    evt.preventDefault();
+    store.questionNumber++;
+    render();
+  })
+}
 
 //END OF SECOND PAGE AND BEYOND STUFF
 //this function is going to render all of the stubs
 function main(){
     render();
     handleStartQuiz();
-
+    handleAnswerSubmit()
 }
 
 $(main);
