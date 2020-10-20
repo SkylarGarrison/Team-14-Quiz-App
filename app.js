@@ -18,9 +18,9 @@ const store = {
 }
 
 function startPageHTML() {
-  return `<header><h1>Science Quiz<h1></header><div class="startPage">
+  return `<div class="wrapper"><header><h1>Science Quiz<h1></header><div class="startPage">
   <p>Let us see how much you know about random science facts!</p>
-  <button type="button" id = "start"> Start the Quiz!</button></div>`
+  <button type="button" id = "start"> Start the Quiz!</button></div></div>`
 }
 
 function currentQuestionHTML(question) {
@@ -56,6 +56,7 @@ function currentQuestionHTML(question) {
       Submit Question
     </button>
 </form>  
+
 `
 }
 
@@ -71,13 +72,16 @@ function renderQuestion() {
       store.score++
 
       $("main").html(
-        `<h1>Correct</h1><p>Correct</p><button class="next">Next</button>`
+        `<h1>Yay Correct!</h1><p>You got question number ${
+          store.questionNumber + 1
+        } right! Good Job!</p><button class="next">Next</button>`
       )
     } else {
       $("main").html(`
-        <h1>Wrong</h1>
-        <p>The correct answer was ${question.correctAnswer} </p>
+        <h1>Incorrect :(</h1>
+        <p>Try again! The correct answer was ${question.correctAnswer}! </p>
         <button class="next">Next</button>
+        
       `)
     }
     store.questionNumber++
@@ -90,7 +94,7 @@ function next() {
     let currentQuestion = store.questionNumber
     if (currentQuestion >= totalNumberOfQuestions) {
       $("main").html(restartScreenHTML())
-      $("#restart").click(function (e) {
+      $(".restart").click(function (e) {
         resetScore()
         renderStartPage()
       })
@@ -111,9 +115,9 @@ function renderStartPage() {
 function restartScreenHTML() {
   return `
     <div class='quiz-result'>
-        <p>The Quiz is over.</p>
-        <p> You scored ${store.score}/${store.questions.length}</p>
-        <button type="button" id="restart"> Restart Quiz</button>
+        <h2>You finished!</h2>
+        <p> You scored ${store.score}/${store.questions.length}!</p>
+        <button type="button" class="restart"> Take the same quiz over again!</button>
     </div>
   `
 }

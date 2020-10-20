@@ -6,3 +6,16 @@
   * https://github.com/andreacardybailey/responsive_example/blob/master/styles/responsive-base.css 
   *
 */
+
+header {
+  display: block;
+}
+
+button {
+  background-color: aqua;
+  border: none;
+}
+
+body {
+  background: rgb(238, 174, 202);
+}
