@@ -30,29 +30,38 @@ const store = {
   score: 0
 };
 
-/**
- * 
- * Technical requirements:
- * 
- * Your app should include a render() function, that regenerates the view each time the store is updated. 
- * See your course material, consult your instructor, and reference the slides for more details.
- *
- * NO additional HTML elements should be added to the index.html file.
- *
- * You may add attributes (classes, ids, etc) to the existing HTML elements, or link stylesheets or additional scripts if necessary
- *
- * SEE BELOW FOR THE CATEGORIES OF THE TYPES OF FUNCTIONS YOU WILL BE CREATING 👇
- * 
- */
+//function will load the star page of the quiz
+function render(){
+  if(store.quizStarted === false){
+    $("main").html(startPage);
+  }
+};
 
-/********** TEMPLATE GENERATION FUNCTIONS **********/
+//function will have a div template that contains the information needed to start the quiz
+function startPage(){
+  let startPage = 
+  `<div class="card">
+      <h2>Welcome to our fun scientific quiz</h2>
+      <p>It should be easy...if you know your stuff</p>
+      <button id="start"></button> 
+    </div>
+  `;
+return startPage;
 
-// These functions return HTML templates
+}
 
-/********** RENDER FUNCTION(S) **********/
+// this function will render the first question once the "start" button is pushed
+function handleStartQuiz(){
 
-// This function conditionally replaces the contents of the <main> tag based on the state of the store
+}
 
-/********** EVENT HANDLER FUNCTIONS **********/
+//this function will contain the information needed for each question in the quiz
+function questionPage(){
 
-// These functions handle events (submit, click, etc)
+}
+
+function main(){
+  render();
+}
+
+$(main);
