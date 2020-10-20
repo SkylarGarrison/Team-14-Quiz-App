@@ -115,8 +115,8 @@ function renderStartPage() {
 function restartScreenHTML() {
   return `
     <div class='quiz-result'>
-        <h2>You finished!</h2>
-        <p> You scored ${store.score}/${store.questions.length}!</p>
+        <h2>Yay! You finished the Quiz!</h2>
+        <p> You scored a ${(store.score / store.questions.length) * 100}%!</p>
         <button type="button" class="restart"> Take the same quiz over again!</button>
     </div>
   `
