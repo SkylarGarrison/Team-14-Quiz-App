@@ -3,8 +3,28 @@ const store = {
   questions: [
     {
       question: "What color is broccoli?",
-      answers: ["red", "orange", "pink", "green"],
+      answers: ["Red", "Orange", "Pink", "Green"],
       correctAnswer: "green",
+    },
+    {
+      question: "What is the current year?",
+      answers: ["1970", "2015", "2019", "2005"],
+      correctAnswer: "2019",
+    },
+    {
+      question: "What is the current year?",
+      answers: ["1970", "2015", "2019", "2005"],
+      correctAnswer: "2019",
+    },
+    {
+      question: "What is the current year?",
+      answers: ["1970", "2015", "2019", "2005"],
+      correctAnswer: "2019",
+    },
+    {
+      question: "What is the current year?",
+      answers: ["1970", "2015", "2019", "2005"],
+      correctAnswer: "2019",
     },
     {
       question: "What is the current year?",
@@ -94,7 +114,7 @@ function next() {
     let currentQuestion = store.questionNumber
     if (currentQuestion >= totalNumberOfQuestions) {
       $("main").html(restartScreenHTML())
-      $(".restart").click(function (e) {
+      $(".restart").click(function (event) {
         resetScore()
         renderStartPage()
       })
@@ -116,7 +136,10 @@ function restartScreenHTML() {
   return `
     <div class='quiz-result'>
         <h2>Yay! You finished the Quiz!</h2>
-        <p> You scored a ${(store.score / store.questions.length) * 100}%!</p>
+        <p> You scored a ${(
+          (store.score / store.questions.length) *
+          100
+        ).toFixed(0)}%!</p>
         <button type="button" class="restart"> Take the same quiz over again!</button>
     </div>
   `

@@ -9,6 +9,8 @@
 
 header {
   display: block;
+  color: rebeccapurple;
+  text-decoration: underline;
 }
 
 button {
@@ -17,5 +19,20 @@ button {
 }
 
 body {
+  width: 500px;
+  margin: auto;
   background: rgb(238, 174, 202);
+}
+
+h3 {
+  color: rebeccapurple;
+}
+
+p {
+  color: rebeccapurple;
+}
+
+form {
+  color: firebrick;
+  border: aqua 1px;
 }
