@@ -57,80 +57,129 @@ const store = {
   questionNumber: 0,
   score: 0
 };
-//FIRST PAGE STUFF
-//this render function takes in the parameter of quizstarted from store if false it will send to startPage if true it will send to question page function
-function render(){
-  if(store.quizStarted === false){
-    $("main").html(startPage());
-  } else if(store.quizStarted === true){
-    $("main").html(questionPage());
-    
+
+//this is the first page that pops up to the user and the DOM
+function startPageHTML() {
+  return `<div class="wrapper"><header><h1>Science Quiz<h1></header><div class="startPage">
+  <p>Let us see how much you know about random science facts!</p>
+  <button type="button" id = "start"> Start the Quiz!</button></div></div>`
+}
+
+//this is the second page that pops up to the user
+function currentQuestionHTML(question) {
+  let answer = question.answers
+  return `<header>
+  <h1>Fun Science Quiz</h1>
+  <p>Current Question: ${store.questionNumber + 1}</p>
+  <p>Score: ${store.score}</p>
+</header>
+<form>
+  <h3 class="Question"> ${question.question} </h3>
+  <label for="answer-0">
+      <input type="radio" id="answer-0" name="answer" value="${
+        answer[0]
+      }"required>${answer[0]}
+    </label>
+  <label for="answer-1">
+      <input type="radio" id="answer-1" name="answer" value="${answer[1]}">${
+    answer[1]
   }
-}
-//this function is going to have a div template to start out the app and a button with id="start" the button will begin the app 
-function startPage(){
-  let startPage = 
-    `
-      <div class="card">
-        <h2>Welcome to our quiz</h2>
-        <p>It's going to be fun and easy</p>
-        <button id="start">start quiz</button> 
-      </div>
-    `;
-  return startPage;
-}
-
-//once the user clicks on the start button and sends to main function to render html 
-function handleStartQuiz(){
-    $("main").on("click", "#start", function(){
-        store.quizStarted = true;
-        render();
-    })
+    </label>
+  <label for="answer-2">
+      <input type="radio" id="answer-2" name="answer" value="${answer[2]}">${
+    answer[2]
+  }
+    </label>
+  <label for="answer-3">
+      <input type="radio" id="answer-3" name="answer" value="${answer[3]}">${
+    answer[3]
+  }
+    </label>
+  <button class="submitButton" type="submit">
+      Submit Question
+    </button>
+</form>  
+`
 }
 
-//END OF FIRST PAGE STUFF
-//SECOND PAGE AND BEYOND STUFF
-// in this function it will render the html template for the questions and multiple forms
-function questionPage(){
-  let question = store.questions[store.questionNumber];
+//this is the second thing passed onto the DOM it shows in html the currentQuestionHtml function and when clicked on button it saves the answer input from user
+//and it runs the answer to a if loop, if correct it will give a 1 plus to score and output to html saying correct and button to next
+// if wrong it will output to page that says incorrect
+function renderQuestion() {
+  let question = store.questions[store.questionNumber]
+  let questionHTML = currentQuestionHTML(question)
+  $("main").html(questionHTML)
+  $("form").submit(function (event) {
+    event.preventDefault()
+    let answer = $("input:radio[name=answer]:checked").val()
 
-  let questionPage = 
-    `
-      <div class="card">
-        <h2>${question.question}</h2>
-        <form>
-          <label>${question.answers[0]}</label>
-            <input type="radio" name="answer" value="${question.answers[0]}">
-          <label>${question.answers[1]}</label>
-            <input type="radio" name="answer" value="${question.answers[1]}">
-          <label>${question.answers[2]}</label>
-            <input type="radio" name="answer" value="${question.answers[2]}">
-          <label>${question.answers[3]}</label>
-            <input type="radio" name="answer" value="${question.answers[3]}">
-            <br>
-          <button type="submit">Submit your answer</button>
-
-        </form>
-      </div>
-    `;
-    return questionPage;
-}
-
-// this function goes in the question page
-function handleAnswerSubmit(){
-  $("main").on("submit", "form", function(evt){
-    evt.preventDefault();
-    store.questionNumber++;
-    render();
+    if (answer === question.correctAnswer) {
+      store.score++
+      //this might be what user sees after second page
+      $("main").html(
+        `<h1>Yay Correct!</h1><p>You got question number ${
+          store.questionNumber + 1
+        } right! Good Job!</p><button class="next">Next</button>`
+      )
+    } else {
+      //this might be what user sees after second page
+      $("main").html(`
+        <h1>Incorrect :(</h1>
+        <p>Try again! The correct answer was ${question.correctAnswer}! </p>
+        <button class="next">Next</button>
+        
+      `)
+    }
+    store.questionNumber++
   })
 }
 
-//END OF SECOND PAGE AND BEYOND STUFF
-//this function is going to render all of the stubs
-function main(){
-    render();
-    handleStartQuiz();
-    handleAnswerSubmit()
+
+
+
+//this function decides if user will see another question or taken to a game over page with results
+function next() {
+  $("main").on("click", ".next", function () {
+    let totalNumberOfQuestions = store.questions.length
+    let currentQuestion = store.questionNumber
+    if (currentQuestion >= totalNumberOfQuestions) {
+      $("main").html(restartScreenHTML())
+      $(".restart").click(function (event) {
+        resetScore()
+        renderStartPage()
+      })
+    } else {
+      renderQuestion()
+    }
+  })
 }
 
-$(main);
+//this function gives the game over page with results
+function restartScreenHTML() {
+  return `
+    <div class='quiz-result'>
+        <h2>Yay! You finished the Quiz!</h2>
+        <p> You scored a ${(
+          (store.score / store.questions.length) *
+          100
+        ).toFixed(0)}%!</p>
+        <button type="button" class="restart"> Take the same quiz over again!</button>
+    </div>
+  `
+}
+
+//this function restarts the game
+function resetScore() {
+  store.score = 0
+  store.questionNumber = 0
+}
+
+//this function begins the website starting with "startPageHTML" and then once the button in that site is clicked it goes to "renderQuestion" and finally goes to "next"
+function renderStartPage() {
+  $("main").html(startPageHTML())
+  $("#start").on("click", function () {
+    renderQuestion()
+    next()
+  })
+}
+$(renderStartPage)
